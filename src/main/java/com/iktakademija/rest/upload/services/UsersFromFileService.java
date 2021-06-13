@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.opencsv.exceptions.CsvValidationException;
+
 public interface UsersFromFileService {
+	
+	public String storeUsersFromFile(MultipartFile file) throws CsvValidationException, IOException;
 
 	public String fileUpload(MultipartFile file) throws IOException;
 
