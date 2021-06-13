@@ -19,5 +19,8 @@ public interface UsersFromFileService {
 	public ResponseEntity<Object> usersDownload() throws IOException;
 
 	public ResponseEntity<Object> usersWithFieldsDownload(ArrayList<String> list) throws IOException;
+	
+	public void sendMessageWithAttachment(String to, String subject, String text, MultipartFile file) throws Exception;
+
 
 }

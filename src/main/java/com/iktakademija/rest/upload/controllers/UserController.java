@@ -25,10 +25,10 @@ public class UserController {
 
 	@Autowired
 	private UsersFromFileService usersFromFile;
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@RequestMapping(value = "/enterUsers", method = RequestMethod.POST)
 	public String storeUsersFromFile(@RequestBody MultipartFile file) throws IOException, CsvException {
 		String retVal = null;
@@ -88,7 +88,7 @@ public class UserController {
 		}
 		return ResponseEntity.ok(nok);
 	}
-	
+
 	//2.3
 	@RequestMapping(path = "/downloadUsersWithSpecificFields", method = RequestMethod.GET)
 	public ResponseEntity<Object> downloadUsersSpecial(@RequestParam ArrayList<String> list) {
@@ -102,5 +102,15 @@ public class UserController {
 		}
 		return ResponseEntity.ok(nok);
 	}
-		
+
+	@RequestMapping(method = RequestMethod.POST, value = "/emailWithAttachment")
+	public String sendMessageWithAttachment(@RequestParam String to, @RequestParam String subject,
+			@RequestParam String text, @RequestParam("file") MultipartFile file) throws Exception {
+		if (to == null || subject == null || text == null) {
+			return null;
+		}
+		usersFromFile.sendMessageWithAttachment(to, subject, text, file);
+		return "Your mail has been sent!";
+	}
+
 }

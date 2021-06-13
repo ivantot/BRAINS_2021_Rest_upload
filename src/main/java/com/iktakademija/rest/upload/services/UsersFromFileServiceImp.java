@@ -10,13 +10,19 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.iktakademija.rest.upload.entities.UserEntity;
 import com.iktakademija.rest.upload.repositories.UserRepository;
 import com.opencsv.CSVReader;
@@ -28,6 +34,9 @@ public class UsersFromFileServiceImp implements UsersFromFileService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private JavaMailSender emailSender;
 
 	public List<List<String>> getRecordsFromCsv(MultipartFile file) throws CsvValidationException, IOException {
 		List<List<String>> records = new ArrayList<List<String>>();
@@ -237,6 +246,17 @@ public class UsersFromFileServiceImp implements UsersFromFileService {
 		file.delete();
 
 		return responseEntity;
+	}
+
+	@Override
+	public void sendMessageWithAttachment(String to, String subject, String text, MultipartFile file) throws Exception {
+		MimeMessage mail = emailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(mail, true);
+		helper.setTo(to);
+		helper.setSubject(subject);
+		helper.setText(text, false);
+		helper.addAttachment(file.getOriginalFilename(), file);
+		emailSender.send(mail);
 	}
 
 }
