@@ -54,6 +54,9 @@ public class UserEntity {
 	}
 
 	public Double getExpences() {
+		if (this.expences == null) {
+			return 0.00;
+		}
 		return expences;
 	}
 
