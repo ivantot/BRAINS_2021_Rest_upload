@@ -88,7 +88,17 @@ public class UserController {
 		}
 		return ResponseEntity.ok(nok);
 	}
-
+/**
+ * user provides a list of fields to be shown, helper method prepareHeaders(ArrayList<String> list)
+ * takes the list and returns headers for the csv,
+ * helper method storeAllUsersToFileSpecFields(ArrayList<String> list) uses the same list and prepared header
+ * to populate the csv and save it to disk.
+ * finally, usersWithFieldsDownload(ArrayList<String> list) executes the donwload by copying the csv and 
+ * preparing the ResponseEntity fot he controller
+ * 
+ * @param ArrayList<String>
+ * @return ResponseEntity
+ */
 	//2.3
 	@RequestMapping(path = "/downloadUsersWithSpecificFields", method = RequestMethod.GET)
 	public ResponseEntity<Object> downloadUsersSpecial(@RequestParam ArrayList<String> list) {
